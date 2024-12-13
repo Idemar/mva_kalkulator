@@ -1,0 +1,88 @@
+import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    
+    in property <string> resultat: "";
+    callback delt_sum(string);
+    in-out property <bool> open_curtain;
+    animate background {
+         duration: 800ms;
+    }
+
+    background: #3f4ef5;
+
+    GridLayout {
+        padding: 50px;
+        spacing: 25px;
+
+        Row {
+            text := Text {
+                text: "Moms kalkulator";
+                horizontal-alignment: center;
+                font-size: 24px;
+                font-weight: 900;
+            }
+        }
+
+        Row {
+            input := LineEdit {
+                placeholder-text: "Tast inn total summen";
+                font-size: 16px;
+                height: 35px;
+                horizontal-alignment: center;
+            }
+        }
+
+        Row {
+            button := Button {
+                text: "Kalkuler";
+                padding-top: 30px;
+                height: 35px;
+                primary: true;
+                clicked => {
+                    root.open_curtain = !root.open_curtain;
+                    root.delt_sum(input.text);
+                }
+            }
+        }
+
+        Row {
+            VerticalBox {
+                Rectangle {
+                    height: 100px;
+                    background: #c7c5c7;
+                    Text {
+                        text: root.resultat;
+                        font-size: 16px;
+                        color: #000000;
+                        font-weight: 500;
+                    }
+
+                    Rectangle {
+                        background: #333333;
+                        x: 0px;
+                        width: open_curtain ? 0px : (parent.width / 2);
+                        height: parent.height;
+                        animate width {
+                             duration: 250ms; easing: ease-in;
+                        }
+                    }
+
+                    Rectangle {
+                        background: #333333;
+                        x: open_curtain ? parent.width : (parent.width / 2);
+                        width: open_curtain ? 0px : (parent.width / 2);
+                        height: parent.height;
+                        animate width {
+                             duration: 250ms; easing: ease-in;
+                        }
+                        animate x {
+                             duration: 250ms; easing: ease-in;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
